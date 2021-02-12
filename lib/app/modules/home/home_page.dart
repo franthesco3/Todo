@@ -102,29 +102,40 @@ class HomePage extends StatelessWidget {
                       itemCount: todos.length,
                       itemBuilder: (context, index) {
                         var todo = todos[index];
-                        return ListTile(
-                          leading: Checkbox(
-                            value: todo.finalizado,
-                            onChanged: (value) =>
-                                controller.changCheckBox(todo),
+                        return Dismissible(
+                          key: Key(todo.id.toString()),
+                          onDismissed: (value) {
+                            controller.remover(todo);
+                            todos.removeAt(index);
+                          },
+                          background: Container(
+                            color: Colors.red,
+                            child: Icon(Icons.cancel),
                           ),
-                          title: Text(
-                            todo.descricao,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                decoration: todo.finalizado
-                                    ? TextDecoration.lineThrough
-                                    : null),
-                          ),
-                          trailing: Text(
-                            '${todo.dataHora.hour.toString().padLeft(2, '0')}:${todo.dataHora.minute.toString().padLeft(2, '0')}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                decoration: todo.finalizado
-                                    ? TextDecoration.lineThrough
-                                    : null),
+                          child: ListTile(
+                            leading: Checkbox(
+                              value: todo.finalizado,
+                              onChanged: (value) =>
+                                  controller.changCheckBox(todo),
+                            ),
+                            title: Text(
+                              todo.descricao,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  decoration: todo.finalizado
+                                      ? TextDecoration.lineThrough
+                                      : null),
+                            ),
+                            trailing: Text(
+                              '${todo.dataHora.hour.toString().padLeft(2, '0')}:${todo.dataHora.minute.toString().padLeft(2, '0')}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  decoration: todo.finalizado
+                                      ? TextDecoration.lineThrough
+                                      : null),
+                            ),
                           ),
                         );
                       },

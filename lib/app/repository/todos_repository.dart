@@ -31,4 +31,9 @@ class TodoRepository {
       [todo.finalizado ? 1 : 0, todo.id],
     );
   }
+
+  Future<void> removeTodo(TodoModel model) async {
+    var connect = await Connection().instance;
+    await connect.rawDelete('delete from todo where id = ?', [model.id]);
+  }
 }

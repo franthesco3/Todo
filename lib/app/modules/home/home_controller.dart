@@ -10,6 +10,8 @@ class HomeController extends ChangeNotifier {
   DateTime daySelected;
   DateTime startFilter;
   DateTime endFilter;
+  bool loading = false;
+  String error;
   Map<String, List<TodoModel>> listTodos;
   var dateFormat = DateFormat('dd/MM/yyyy');
   HomeController({@required this.repository}) {
@@ -92,5 +94,14 @@ class HomeController extends ChangeNotifier {
     } else if (selectIndex == 2) {
       this.findTodosBySelectedDay();
     }
+  }
+
+  Future<void> remover(TodoModel model) async {
+    try {
+      await repository.removeTodo(model);
+    } catch (e) {
+      this.error = 'Error ao deletar todo';
+    }
+    notifyListeners();
   }
 }
